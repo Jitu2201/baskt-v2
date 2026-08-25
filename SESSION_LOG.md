@@ -227,3 +227,22 @@ opened PR #4 (`Bump Kotlin (KGP) to 2.2.20 to fix debug APK build`) for
 you to review and merge: https://github.com/Jitu2201/baskt-v2/pull/4.
 No rebase was needed this time since I'd already confirmed the branch
 was even with `main` before starting.
+
+---
+
+## 2026-08-25 — Pinning the CI workflow to Flutter 3.47.1
+
+Checked `main` first per the standing rule - still at the PR #3 merge,
+and PR #4 (Kotlin fix) is still open with the branch correctly ahead of
+it, so no rebase needed; this change is going onto that same open PR
+since it's directly related (avoiding more of these version-drift
+surprises on `channel: stable`).
+
+Changed `.github/workflows/build-apk.yml`'s "Set up Flutter" step from
+`channel: stable` to `flutter-version: "3.47.1"` (the exact version I
+verified the Gradle/AGP/Kotlin fixes against). I also left a comment in
+the workflow explaining why it's pinned instead of tracking stable, and
+that bumping it later should be a deliberate step where you re-check
+the `android/` versions against the new release's requirements, not
+something that happens automatically. Builds should now stay
+reproducible until you choose to bump the pinned version yourself.
