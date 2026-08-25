@@ -217,3 +217,13 @@ anything in this repo changing. If you'd rather avoid that treadmill,
 I can pin the workflow to a specific Flutter version (e.g. 3.47.1) so
 builds stay reproducible until you deliberately bump it - happy to do
 that if you want, just let me know.
+
+---
+
+## 2026-08-25 — Opening PR #4 for the Kotlin fix
+
+Pushed the Kotlin bump to `claude/baskt-v2-flutter-setup-1lvx1q` and
+opened PR #4 (`Bump Kotlin (KGP) to 2.2.20 to fix debug APK build`) for
+you to review and merge: https://github.com/Jitu2201/baskt-v2/pull/4.
+No rebase was needed this time since I'd already confirmed the branch
+was even with `main` before starting.
