@@ -129,3 +129,45 @@ history that's already on `main` - the fix commit itself was kept).
 Then I opened PR #2 (`Bump Gradle wrapper to 8.14 to fix debug APK
 build`) from that branch into `main` for you to review and merge:
 https://github.com/Jitu2201/baskt-v2/pull/2
+
+---
+
+## 2026-08-25 — Bumping AGP after a follow-on build failure
+
+The Gradle bump surfaced a second, related error: Flutter now also
+requires Android Gradle Plugin (AGP) 8.11.1 minimum, and the project was
+still on AGP 8.9.1 (set in `android/settings.gradle.kts`). I bumped it
+to 8.11.1, which is compatible with the Gradle 8.14 wrapper we're
+already on (AGP 8.11.1's own minimum Gradle requirement is 8.13, so
+8.14 satisfies it). `compileSdk`/`minSdk`/`targetSdk` in
+`android/app/build.gradle.kts` are all pulled from Flutter's own
+`flutter.*Version` values rather than hardcoded, so they stay in sync
+automatically and didn't need a manual change.
+
+`flutter analyze` still passes with no issues. This commit is going
+onto the same PR #2 branch, since that PR hasn't been merged yet.
+
+---
+
+## 2026-08-25 — Opening a new PR for the AGP fix
+
+You checked GitHub and PR #2 had already been merged, so the AGP fix
+commit I'd pushed onto that same branch afterward wasn't reachable from
+`main` - same situation as last time. I did the same cleanup: reset the
+branch to the current `main` (now including the merged Gradle fix),
+cherry-picked just the AGP commit onto it, and force-pushed. Then
+opened PR #3 (`Bump AGP to 8.11.1 to fix debug APK build`) for you to
+review and merge: https://github.com/Jitu2201/baskt-v2/pull/3
+
+---
+
+## 2026-08-25 — New standing rule: check GitHub's main before starting a new fix
+
+You asked me to check GitHub for the latest `main` before starting any
+new fix from now on, so we don't hit the "branch already merged, new
+commit stranded" situation a third time. Agreed - from this point on,
+before starting a new change I'll fetch `origin/main` and compare it
+against the working branch first. If the branch's prior history has
+already been merged, I'll reset the branch to current `main` before
+adding new commits, rather than building on top of stale/merged
+history and finding out only after pushing.
