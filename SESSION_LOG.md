@@ -146,3 +146,15 @@ automatically and didn't need a manual change.
 
 `flutter analyze` still passes with no issues. This commit is going
 onto the same PR #2 branch, since that PR hasn't been merged yet.
+
+---
+
+## 2026-08-25 — Opening a new PR for the AGP fix
+
+You checked GitHub and PR #2 had already been merged, so the AGP fix
+commit I'd pushed onto that same branch afterward wasn't reachable from
+`main` - same situation as last time. I did the same cleanup: reset the
+branch to the current `main` (now including the merged Gradle fix),
+cherry-picked just the AGP commit onto it, and force-pushed. Then
+opened PR #3 (`Bump AGP to 8.11.1 to fix debug APK build`) for you to
+review and merge: https://github.com/Jitu2201/baskt-v2/pull/3
