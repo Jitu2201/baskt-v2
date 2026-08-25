@@ -129,3 +129,20 @@ history that's already on `main` - the fix commit itself was kept).
 Then I opened PR #2 (`Bump Gradle wrapper to 8.14 to fix debug APK
 build`) from that branch into `main` for you to review and merge:
 https://github.com/Jitu2201/baskt-v2/pull/2
+
+---
+
+## 2026-08-25 — Bumping AGP after a follow-on build failure
+
+The Gradle bump surfaced a second, related error: Flutter now also
+requires Android Gradle Plugin (AGP) 8.11.1 minimum, and the project was
+still on AGP 8.9.1 (set in `android/settings.gradle.kts`). I bumped it
+to 8.11.1, which is compatible with the Gradle 8.14 wrapper we're
+already on (AGP 8.11.1's own minimum Gradle requirement is 8.13, so
+8.14 satisfies it). `compileSdk`/`minSdk`/`targetSdk` in
+`android/app/build.gradle.kts` are all pulled from Flutter's own
+`flutter.*Version` values rather than hardcoded, so they stay in sync
+automatically and didn't need a manual change.
+
+`flutter analyze` still passes with no issues. This commit is going
+onto the same PR #2 branch, since that PR hasn't been merged yet.
