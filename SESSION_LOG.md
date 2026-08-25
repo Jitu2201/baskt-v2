@@ -111,3 +111,21 @@ I can't fully rebuild the APK locally to double-check, since this
 sandbox's network policy blocks `dl.google.com` (where the Android SDK
 components live) — only the CI runner has that access. Let me commit
 this and push so the next Actions run validates it for real.
+
+---
+
+## 2026-08-25 — Opening a PR for the Gradle fix
+
+The Gradle fix had been pushed straight to
+`claude/baskt-v2-flutter-setup-1lvx1q`, but that branch's earlier work
+was already merged into `main` via PR #1 before I made the fix - so the
+fix commit was sitting on top of already-merged history on the same
+branch name, with nothing open for you to merge.
+
+To clean that up: I reset the branch to start from the current `main`,
+cherry-picked just the Gradle fix commit onto it, and force-pushed
+(safe here since the only thing being discarded from the branch was
+history that's already on `main` - the fix commit itself was kept).
+Then I opened PR #2 (`Bump Gradle wrapper to 8.14 to fix debug APK
+build`) from that branch into `main` for you to review and merge:
+https://github.com/Jitu2201/baskt-v2/pull/2
