@@ -171,3 +171,49 @@ against the working branch first. If the branch's prior history has
 already been merged, I'll reset the branch to current `main` before
 adding new commits, rather than building on top of stale/merged
 history and finding out only after pushing.
+
+---
+
+## 2026-08-25 — Kotlin version fix, plus checking all version requirements at once
+
+Checked `main` first per the new rule - PR #3 was already merged, and
+this time the local branch was already even with it, so no rebase was
+needed before starting.
+
+For the actual fix: rather than patch the Kotlin version and wait to
+see what breaks next, I upgraded my local Flutter SDK to the same
+release channel your CI uses (`channel: stable`, which is a moving
+target - it had drifted to Flutter 3.47.1 since I last checked), then
+read the exact version thresholds straight from that release's own
+source (`DependencyVersionChecker.kt` in `flutter_tools`), instead of
+inferring them from compatibility tables like I did for the Gradle/AGP
+fixes. That file defines the real minimums Flutter enforces:
+
+- Gradle: error below 8.14.0, warn below 9.1.0 - we're at 8.14, already fine.
+- Java: error/warn at 17 - your CI workflow already uses Java 17, already fine.
+- AGP: error below 8.11.1, warn below 9.0.1 - we're at 8.11.1, already fine.
+- Kotlin (KGP): error below 2.2.20, warn below 2.3.20 - we were at 2.1.0, which is what broke. Bumped to 2.2.20.
+
+So Kotlin was the only one left to fix; nothing else is currently below
+its minimum. I bumped `org.jetbrains.kotlin.android` from 2.1.0 to
+2.2.20 in `android/settings.gradle.kts`.
+
+I still can't fully rebuild the APK here to confirm end-to-end - the
+Gradle-level version check only runs once Gradle actually starts, which
+requires the Android SDK, and this sandbox's network policy blocks
+`dl.google.com` where that lives. I did confirm `flutter analyze` and
+`flutter test` still pass clean on the upgraded local Flutter SDK, and
+that `flutter build apk --debug` gets past dependency resolution before
+stopping at the expected "No Android SDK found" (an environment
+limitation here, not a version problem) - it did not hit any
+Gradle/AGP/Kotlin version error, which is what I'd expect if the fix is
+correct, though it's not a full guarantee since the actual
+Gradle-plugin version check task never got to run in this environment.
+
+One thing worth flagging: because your CI workflow uses `channel:
+stable` rather than a pinned version, Flutter's own minimum-version
+requirements can shift again on some future run, independent of
+anything in this repo changing. If you'd rather avoid that treadmill,
+I can pin the workflow to a specific Flutter version (e.g. 3.47.1) so
+builds stay reproducible until you deliberately bump it - happy to do
+that if you want, just let me know.
