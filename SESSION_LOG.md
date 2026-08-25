@@ -95,3 +95,19 @@ file (not summarized), committed and pushed alongside the related code
 changes. This entry, and the summary section above it, are the result
 of setting that up. Going forward, each new explanation I give you in
 chat gets appended here verbatim before I commit.
+
+---
+
+## 2026-08-25 — Fixing the Gradle version mismatch in the APK build
+
+That error comes from Flutter's own Gradle version check, and it's
+independent of the Android Gradle Plugin (AGP) version in the project —
+I confirmed AGP 8.9.1 (already in `android/settings.gradle.kts`) is
+compatible with Gradle 8.14, so bumping just the wrapper is the right
+fix. I bumped `android/gradle/wrapper/gradle-wrapper.properties` from
+Gradle 8.12 → 8.14.
+
+I can't fully rebuild the APK locally to double-check, since this
+sandbox's network policy blocks `dl.google.com` (where the Android SDK
+components live) — only the CI runner has that access. Let me commit
+this and push so the next Actions run validates it for real.
