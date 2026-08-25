@@ -20,10 +20,14 @@ jobs:
           distribution: temurin
           java-version: "17"
 
+      # Pinned (not "channel: stable") so builds stay reproducible. Flutter's
+      # own minimum Gradle/AGP/Kotlin requirements can change between stable
+      # releases, so bump this deliberately (and check android/ versions
+      # still satisfy the new release) rather than letting it drift.
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: stable
+          flutter-version: "3.47.1"
           cache: true
 
       - name: Install dependencies
