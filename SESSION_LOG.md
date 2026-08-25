@@ -158,3 +158,16 @@ branch to the current `main` (now including the merged Gradle fix),
 cherry-picked just the AGP commit onto it, and force-pushed. Then
 opened PR #3 (`Bump AGP to 8.11.1 to fix debug APK build`) for you to
 review and merge: https://github.com/Jitu2201/baskt-v2/pull/3
+
+---
+
+## 2026-08-25 — New standing rule: check GitHub's main before starting a new fix
+
+You asked me to check GitHub for the latest `main` before starting any
+new fix from now on, so we don't hit the "branch already merged, new
+commit stranded" situation a third time. Agreed - from this point on,
+before starting a new change I'll fetch `origin/main` and compare it
+against the working branch first. If the branch's prior history has
+already been merged, I'll reset the branch to current `main` before
+adding new commits, rather than building on top of stale/merged
+history and finding out only after pushing.
